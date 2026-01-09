@@ -12,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         //
+        $middleware->web(append: [
+            'auth',
+            \App\Http\Middleware\UpdateLastOnline::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'bio',
+        'links',
     ];
 
     /**
@@ -43,6 +46,19 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_online_at'    => 'datetime',
+            'links'             => 'array',
         ];
     }
+
+    public function stores()
+    {
+        return $this->hasMany(Store::class);
+    }
+    
+    public function customStyle()
+    {
+        return $this->belongsTo(CustomStyle::class);
+    }
+
 }
