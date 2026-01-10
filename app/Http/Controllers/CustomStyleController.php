@@ -21,18 +21,21 @@ class CustomStyleController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'   => 'required|string|max:255',
-            'styles' => 'required|array',
+            'name' => ['required', 'string', 'max:255'],
+            'tokens' => ['required', 'array'],
+            'custom_css' => ['nullable', 'string'],
         ]);
 
         CustomStyle::create([
+            'user_id' => auth()->id(),
             'name' => $data['name'],
-            'styles' => json_encode($data['styles']),
+            'tokens' => $data['tokens'],
+            'custom_css' => $data['custom_css'],
         ]);
 
-        return redirect()->route('custom-styles.index')
-            ->with('success', 'Style created');
+        return redirect()->route('dashboard')->with('success', 'Style created!');
     }
+
 
     public function show(CustomStyle $customStyle)
     {
@@ -41,24 +44,31 @@ class CustomStyleController extends Controller
 
     public function edit(CustomStyle $customStyle)
     {
+        abort_if($customStyle->user_id !== auth()->id(), 403);
         return view('custom_styles.edit', compact('customStyle'));
     }
 
     public function update(Request $request, CustomStyle $customStyle)
     {
+        abort_if($customStyle->user_id !== auth()->id(), 403);
+
         $data = $request->validate([
-            'name'   => 'required|string|max:255',
-            'styles' => 'required|array',
+            'name'       => 'required|string|max:255',
+            'tokens'     => 'required|array',
+            'custom_css' => 'nullable|string',
         ]);
 
         $customStyle->update([
-            'name' => $data['name'],
-            'styles' => json_encode($data['styles']),
+            'name'       => $data['name'],
+            'tokens'     => $data['tokens'],     // ✅ let casts handle it
+            'custom_css' => $data['custom_css'], // ✅ now saved
         ]);
 
-        return redirect()->route('custom-styles.index')
+        return redirect()
+            ->route('custom-styles.index')
             ->with('success', 'Style updated');
     }
+
 
     public function destroy(CustomStyle $customStyle)
     {

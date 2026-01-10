@@ -1,6 +1,8 @@
 @props(['product'])
 
 <a
+    data-style="product-card"
+    data-product-id="{{ $product->id }}"
     href="{{ route('products.show', $product) }}"
     class="group block bg-white rounded-xl border border-gray-200 shadow-sm
            hover:shadow-md transition overflow-hidden focus:outline-none
