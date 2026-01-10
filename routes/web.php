@@ -6,15 +6,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomStyleController;
+use App\Http\Controllers\HomeController;
 
 Route::resource('stores', StoreController::class);
 Route::resource('products', ProductController::class);
 Route::resource('custom-styles', CustomStyleController::class);
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
