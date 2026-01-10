@@ -57,38 +57,11 @@
         @if($store->products->count())
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($store->products as $product)
-                    <div class="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition overflow-hidden">
-                        {{-- Product image placeholder --}}
-                        <div class="h-40 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
-                            No image
-                        </div>
-
-                        <div class="p-4 space-y-2">
-                            <h3 class="font-semibold text-gray-900 group-hover:text-indigo-600 transition">
-                                {{ $product->name }}
-                            </h3>
-
-                            <p class="text-sm text-gray-600 line-clamp-2">
-                                {{ $product->description ?? 'No description' }}
-                            </p>
-
-                            <div class="flex items-center justify-between pt-2">
-                                <span class="text-sm font-semibold text-gray-900">
-                                    R$ {{ number_format($product->price, 2, ',', '.') }}
-                                </span>
-
-                                <a
-                                    href="{{ route('products.show', $product) }}"
-                                    class="text-sm text-indigo-600 hover:underline"
-                                >
-                                    View →
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    @include('components.product.card', ['product' => $product])
                 @endforeach
             </div>
         @else
+
             {{-- Empty state --}}
             <div class="rounded-xl border border-dashed border-gray-300 p-10 text-center text-gray-500">
                 <p class="text-lg font-medium">No products yet</p>
