@@ -86,12 +86,13 @@
         >
             View store →
         </a>
-
+        @if(Auth::user() && Auth::user()->id === $store->user_id)
         <a
             href="{{ route('stores.edit', $store) }}"
             class="text-gray-500 hover:text-yellow-600 transition"
         >
             Edit
         </a>
+        @endif
     </div>
 </div>
