@@ -26,7 +26,13 @@
     @if($products->count())
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach($products as $product)
-                <div class="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition overflow-hidden">
+                <div
+                    class="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition overflow-hidden cursor-pointer"
+                    role="link"
+                    tabindex="0"
+                    onclick="window.location='{{ route('products.show', $product) }}'"
+                    onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); window.location='{{ route('products.show', $product) }}';}"
+                >
 
                     {{-- Image --}}
                     <div class="relative h-48 bg-gray-100 overflow-hidden">
@@ -50,7 +56,7 @@
                         </h3>
 
                         <p class="text-sm text-gray-600 line-clamp-2">
-                            {{ $product->description ?? 'No description' }}
+                            {{ strip_tags($product->description) ?: 'No description' }}
                         </p>
 
                         <div class="flex items-center justify-between pt-2">

@@ -30,7 +30,7 @@
         </h3>
 
         <p class="text-sm text-gray-600 line-clamp-2">
-            {{ $product->description ?? 'No description' }}
+            {{ strip_tags($product->description) ?: 'No description' }}
         </p>
 
         <div class="flex items-center justify-between pt-2">

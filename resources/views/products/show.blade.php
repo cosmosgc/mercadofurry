@@ -69,7 +69,7 @@
 
             {{-- Description --}}
             <div class="prose prose-sm max-w-none text-gray-700">
-                {!! nl2br(e($product->description)) !!}
+                {!! $product->description !!}
             </div>
 
             {{-- Meta --}}
