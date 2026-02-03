@@ -119,6 +119,19 @@
                         </button>
                     @endif
                 </div>
+
+                @auth
+                    @if(auth()->id() === $product->store->user_id)
+                        <div class="mt-3">
+                            <a
+                                href="{{ route('products.edit', $product) }}"
+                                class="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
+                            >
+                                ✏️ Edit product
+                            </a>
+                        </div>
+                    @endif
+                @endauth
             </div>
         </div>
     </div>
