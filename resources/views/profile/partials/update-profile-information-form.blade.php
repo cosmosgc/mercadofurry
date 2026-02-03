@@ -80,6 +80,28 @@
             <p class="text-xs text-gray-500 mt-1">Biografia curta (opcional, até 1000 letras).</p>
         </div>
 
+        {{-- Social fields --}}
+        <div>
+            <x-input-label for="twitter" :value="__('Twitter / X')" />
+            <x-text-input id="twitter" name="twitter" type="text" class="mt-1 block w-full" :value="old('twitter', $user->twitter)" placeholder="@username" />
+            <x-input-error class="mt-2" :messages="$errors->get('twitter')" />
+            <p class="text-xs text-gray-500 mt-1">Preview: <span id="twitterPreview">https://x.com/{{ $user->twitter ?? 'username' }}</span></p>
+        </div>
+
+        <div class="mt-4">
+            <x-input-label for="telegram" :value="__('Telegram')" />
+            <x-text-input id="telegram" name="telegram" type="text" class="mt-1 block w-full" :value="old('telegram', $user->telegram)" placeholder="@username" />
+            <x-input-error class="mt-2" :messages="$errors->get('telegram')" />
+            <p class="text-xs text-gray-500 mt-1">Preview: <span id="telegramPreview">https://t.me/{{ $user->telegram ?? 'username' }}</span></p>
+        </div>
+
+        <div class="mt-4">
+            <x-input-label for="discord" :value="__('Discord')" />
+            <x-text-input id="discord" name="discord" type="text" class="mt-1 block w-full" :value="old('discord', $user->discord)" placeholder="username#0000" />
+            <x-input-error class="mt-2" :messages="$errors->get('discord')" />
+            <p class="text-xs text-gray-500 mt-1">Discord tag (optional).</p>
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -122,6 +144,34 @@
                 };
                 reader.readAsDataURL(file);
             });
+        })();
+
+        // Live social preview for Twitter / Telegram
+        (function () {
+            const twInput = document.getElementById('twitter');
+            const tgInput = document.getElementById('telegram');
+            const twPreview = document.getElementById('twitterPreview');
+            const tgPreview = document.getElementById('telegramPreview');
+
+            function cleanHandle(value) {
+                return value ? value.trim().replace(/^@+/, '') : '';
+            }
+
+            function updatePreview(input, previewEl, prefix, placeholder) {
+                if (!input || !previewEl) return;
+                const clean = cleanHandle(input.value);
+                previewEl.textContent = clean ? prefix + clean : prefix + placeholder;
+            }
+
+            if (twInput && twPreview) {
+                updatePreview(twInput, twPreview, 'https://x.com/', 'username');
+                twInput.addEventListener('input', () => updatePreview(twInput, twPreview, 'https://x.com/', 'username'));
+            }
+
+            if (tgInput && tgPreview) {
+                updatePreview(tgInput, tgPreview, 'https://t.me/', 'username');
+                tgInput.addEventListener('input', () => updatePreview(tgInput, tgPreview, 'https://t.me/', 'username'));
+            }
         })();
     </script>
 </section>

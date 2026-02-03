@@ -22,6 +22,41 @@
                 No description provided
             </p>
         @endif
+
+        {{-- Owner info --}}
+        @if($store->user)
+            <div class="mt-4 flex items-center gap-3">
+                <img
+                    src="{{ $store->user->avatar ? asset($store->user->avatar) : 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 width=%2240%22 height=%2240%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23e5e7eb%22/><path d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22 fill=%22%236b7280%22/></svg>' }}"
+                    alt="{{ $store->user->name }}"
+                    class="w-10 h-10 rounded-full object-cover border"
+                />
+
+                <div class="text-sm">
+                    <div class="font-medium text-gray-900">{{ $store->user->name }}</div>
+
+                    @if($store->user->twitter || $store->user->telegram || $store->user->discord)
+                        <div class="text-xs text-gray-500 mt-0.5">
+                            @if($store->user->twitter)
+                                <a href="https://x.com/{{ ltrim($store->user->twitter, '@') }}" target="_blank" rel="noopener" class="hover:underline">X</a>
+                            @endif
+
+                            @if($store->user->telegram)
+                                @if($store->user->twitter)
+                                    <span class="mx-1">·</span>
+                                @endif
+                                <a href="https://t.me/{{ ltrim($store->user->telegram, '@') }}" target="_blank" rel="noopener" class="hover:underline">Telegram</a>
+                            @endif
+
+                            @if($store->user->discord)
+                                <span class="mx-1">·</span>
+                                <span>Discord: {{ $store->user->discord }}</span>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
     </div>
 
     {{-- Divider --}}

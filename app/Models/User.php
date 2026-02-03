@@ -24,6 +24,9 @@ class User extends Authenticatable
         'avatar',
         'bio',
         'links',
+        'discord',
+        'twitter',
+        'telegram',
     ];
 
     /**

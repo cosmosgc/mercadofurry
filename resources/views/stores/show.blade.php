@@ -116,20 +116,26 @@
                         @endif
 
                         <div class="mt-2 flex items-center gap-2 text-sm">
-                            @if($store->contact_email)
-                                <a href="mailto:{{ $store->contact_email }}" class="underline">Email</a>
+                            @if($store->contact_email || $store->user?->email)
+                                <a href="mailto:{{ $store->contact_email ?? $store->user?->email }}" class="underline">Email</a>
                             @endif
 
-                            @if($store->contact_twitter)
-                                <a href="https://twitter.com/{{ ltrim($store->contact_twitter, '@') }}" target="_blank" rel="noopener" class="underline">Twitter</a>
+                            @php
+                                $twitter = $store->contact_twitter ?? $store->user?->twitter;
+                                $telegram = $store->contact_telegram ?? $store->user?->telegram;
+                                $discord = $store->contact_discord ?? $store->user?->discord;
+                            @endphp
+
+                            @if($twitter)
+                                <a href="https://x.com/{{ ltrim($twitter, '@') }}" target="_blank" rel="noopener" class="underline">Twitter</a>
                             @endif
 
-                            @if($store->contact_telegram)
-                                <a href="https://t.me/{{ ltrim($store->contact_telegram, '@') }}" target="_blank" rel="noopener" class="underline">Telegram</a>
+                            @if($telegram)
+                                <a href="https://t.me/{{ ltrim($telegram, '@') }}" target="_blank" rel="noopener" class="underline">Telegram</a>
                             @endif
 
-                            @if($store->contact_discord)
-                                <span>Discord: {{ $store->contact_discord }}</span>
+                            @if($discord)
+                                <span>Discord: {{ $discord }}</span>
                             @endif
                         </div>
                     </div>

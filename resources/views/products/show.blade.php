@@ -82,14 +82,43 @@
                 </span>
             </div>
 
-            {{-- Actions (placeholder) --}}
+            {{-- Actions --}}
             <div class="pt-4 border-t space-y-3">
-                <button
-                    disabled
-                    class="w-full rounded-lg bg-gray-300 px-4 py-3 text-sm font-semibold text-gray-600 cursor-not-allowed"
-                >
-                    Contact seller (coming soon)
-                </button>
+                @php
+                    $telegram = $product->store->contact_telegram ?? $product->store->user?->telegram;
+                    $email = $product->store->contact_email ?? $product->store->user?->email;
+
+                    $priceText = 'R$ ' . number_format($product->price, 2, ',', '.');
+                    $message = "Olá, tenho interesse no produto '{$product->name}' da {$product->store->name} anunciado por {$priceText}. Ainda está disponível?";
+                    $encoded = rawurlencode($message);
+                @endphp
+
+                <div class="flex gap-3">
+                    @if($telegram)
+                        <a
+                            href="https://t.me/{{ ltrim($telegram, '@') }}?text={{ $encoded }}"
+                            target="_blank" rel="noopener"
+                            class="inline-flex items-center gap-2 flex-1 justify-center rounded-lg bg-telegram px-4 py-3 text-sm font-semibold text-white hover:opacity-90 transition"
+                        >
+                            📩 Message via Telegram
+                        </a>
+                    @endif
+
+                    @if($email)
+                        <a
+                            href="mailto:{{ $email }}?subject={{ rawurlencode('Enquiry about ' . $product->name) }}&body={{ $encoded }}"
+                            class="inline-flex items-center gap-2 flex-1 justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-700 transition"
+                        >
+                            ✉️ Email the Seller
+                        </a>
+                    @endif
+
+                    @if(!$telegram && !$email)
+                        <button disabled class="w-full rounded-lg bg-gray-300 px-4 py-3 text-sm font-semibold text-gray-600 cursor-not-allowed">
+                            Contact seller (not available)
+                        </button>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
