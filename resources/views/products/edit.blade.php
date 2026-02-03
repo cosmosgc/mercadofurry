@@ -49,21 +49,29 @@
         {{-- Price --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
-            <input
-                name="price"
-                value="{{ old('price', $product->price) }}"
-                class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
-            >
+            <div class="relative">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 text-sm">
+                    R$
+                </span>
+                <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    name="price"
+                    value="{{ old('price', $product->price) }}"
+                    class="w-full rounded-lg border-gray-300 pl-10 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+            </div>
         </div>
 
         {{-- Description --}}
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea
-                name="description"
-                rows="4"
-                class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
-            >{{ old('description', $product->description) }}</textarea>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <div class="rounded-lg border border-gray-300 bg-white">
+                <div id="description-toolbar" class="border-b border-gray-200"></div>
+                <div id="description-editor" class="min-h-[180px]"></div>
+            </div>
+            <input type="hidden" id="description-input" name="description" value="">
         </div>
 
         {{-- Image Upload --}}
@@ -127,7 +135,7 @@
         </div>
 
         {{-- Actions --}}
-        <div class="flex justify-end gap-3 pt-4 border-t">
+        <div class="flex items-center justify-end gap-3 pt-4 border-t">
             <a href="{{ route('products.index') }}" class="text-sm text-gray-600">
                 Cancel
             </a>
@@ -136,6 +144,19 @@
             </button>
         </div>
     </form>
+    <div class="flex items-center justify-between">
+        <form
+            method="POST"
+            action="{{ route('products.destroy', $product) }}"
+            onsubmit="return confirm('Delete this product? This cannot be undone.')"
+        >
+            @csrf
+            @method('DELETE')
+            <button class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">
+                Delete
+            </button>
+        </form>
+    </div>
 </div>
 <script>
 const input = document.getElementById('image-input');
@@ -171,6 +192,48 @@ input.addEventListener('change', () => {
         reader.readAsDataURL(file);
     });
 });
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+<script>
+const descriptionInput = document.getElementById('description-input');
+const descriptionEditor = document.getElementById('description-editor');
+const descriptionToolbar = document.getElementById('description-toolbar');
+const descriptionForm = descriptionInput?.closest('form');
+const initialDescription = @json(old('description', $product->description));
+
+if (descriptionEditor && descriptionInput) {
+    const quill = new Quill(descriptionEditor, {
+        theme: 'snow',
+        modules: {
+            toolbar: {
+                container: [
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['link'],
+                    ['clean']
+                ]
+            }
+        }
+    });
+
+    if (initialDescription) {
+        quill.clipboard.dangerouslyPasteHTML(initialDescription);
+    }
+
+    descriptionToolbar.appendChild(
+        descriptionEditor.parentElement.querySelector('.ql-toolbar')
+    );
+
+    quill.on('text-change', () => {
+        descriptionInput.value = quill.root.innerHTML;
+    });
+
+    descriptionForm?.addEventListener('submit', () => {
+        descriptionInput.value = quill.root.innerHTML;
+    });
+}
 </script>
 
 {{-- SortableJS --}}
