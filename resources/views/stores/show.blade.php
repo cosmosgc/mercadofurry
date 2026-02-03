@@ -94,6 +94,46 @@
                     data-style="store-description"
                     class="mt-2 max-w-3xl text-sm text-gray-200"
                 >
+                    {{ $store->description }}
+                </p>
+
+                <div
+                    id="store-owner"
+                    data-style="store-owner"
+                    class="mt-4 flex items-center gap-4 text-white"
+                >
+                    <img
+                        src="{{ $store->user?->avatar ? asset($store->user->avatar) : 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 width=%2248%22 height=%2248%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23e5e7eb%22/><path d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22 fill=%22%236b7280%22/></svg>' }}"
+                        alt="{{ $store->user?->name }}"
+                        class="w-12 h-12 rounded-full object-cover border border-white/30"
+                    />
+
+                    <div>
+                        <div class="font-semibold">{{ $store->user?->name ?? 'Unknown' }}</div>
+
+                        @if($store->user?->bio)
+                            <div class="text-xs text-white/90">{{ $store->user->bio }}</div>
+                        @endif
+
+                        <div class="mt-2 flex items-center gap-2 text-sm">
+                            @if($store->contact_email)
+                                <a href="mailto:{{ $store->contact_email }}" class="underline">Email</a>
+                            @endif
+
+                            @if($store->contact_twitter)
+                                <a href="https://twitter.com/{{ ltrim($store->contact_twitter, '@') }}" target="_blank" rel="noopener" class="underline">Twitter</a>
+                            @endif
+
+                            @if($store->contact_telegram)
+                                <a href="https://t.me/{{ ltrim($store->contact_telegram, '@') }}" target="_blank" rel="noopener" class="underline">Telegram</a>
+                            @endif
+
+                            @if($store->contact_discord)
+                                <span>Discord: {{ $store->contact_discord }}</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
