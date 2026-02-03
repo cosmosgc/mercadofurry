@@ -34,6 +34,20 @@
 
                 <div class="text-sm">
                     <div class="font-medium text-gray-900">{{ $store->user->name }}</div>
+                    @if($store->user->last_online_at)
+                        <div class="text-xs mt-0.5">
+                            @if($store->user->last_online_at->diffInMinutes(now()) < 1)
+                                <span class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                                    ONLINE
+                                </span>
+                            @else
+                                <span class="text-gray-500">
+                                    Last online {{ $store->user->last_online_at->diffForHumans() }}
+                                </span>
+                            @endif
+                        </div>
+                    @endif
 
                     @if($store->user->twitter || $store->user->telegram || $store->user->discord)
                         <div class="text-xs text-gray-500 mt-0.5">

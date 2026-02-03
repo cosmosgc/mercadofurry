@@ -33,5 +33,26 @@
                 @yield('content')
             </main>
         </div>
+
+        @auth
+            <script>
+            (() => {
+                const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                const ping = () => {
+                    fetch("{{ route('users.last-online') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': token,
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+                };
+
+                ping();
+                setInterval(ping, 120000);
+            })();
+            </script>
+        @endauth
     </body>
 </html>
