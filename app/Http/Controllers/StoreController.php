@@ -9,9 +9,27 @@ use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $stores = Store::with('user', 'customStyle')->latest()->paginate(10);
+        // Retrieve the search query from the GET parameter
+        $query = $request->input('search');
+
+        if ($query) {
+            // If a search query is provided, use it to filter stores
+            $stores = Store::with(['user', 'customStyle'])
+                        ->where('name', 'like', "%$query%")
+                        ->orWhere('slug', 'like', "%$query%")
+                        ->active()
+                        ->latest()
+                        ->paginate(10);
+        } else {
+            // If no search query is provided, retrieve all active stores
+            $stores = Store::with(['user', 'customStyle'])
+                        ->where('active', 1)
+                        ->latest()
+                        ->paginate(10);
+        }
+
         return view('stores.index', compact('stores'));
     }
 

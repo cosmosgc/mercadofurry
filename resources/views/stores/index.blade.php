@@ -20,7 +20,14 @@
             + New Store
         </a>
     </div>
-
+    {{-- Search Form --}}
+    <form action="{{ route('stores.index') }}" method="GET">
+        <input type="text" name="search" class="w-full px-4 py-2 border rounded-lg shadow-sm appearance-none focus:outline-none focus:bg-gray-500 transition" placeholder="Search stores...">
+        <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition">
+            Search
+        </button>
+    </form>
+    {{-- end Search Form --}}
     {{-- Stores Grid --}}
     @if($stores->count())
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

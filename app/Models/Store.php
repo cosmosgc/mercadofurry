@@ -59,6 +59,10 @@ class Store extends Model
 
         return asset('images/store-cover-placeholder.png');
     }
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
 
 
 }
