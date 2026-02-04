@@ -16,11 +16,23 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $requestedStoreId = $request->query('store');
+        $selectedStore = null;
+
+        if (is_numeric($requestedStoreId)) {
+            $selectedStore = Store::find($requestedStoreId);
+        }
+
+        $stores = $selectedStore
+            ? collect([$selectedStore])
+            : Store::where('user_id', auth()->id())->get();
+
         return view('products.create', [
-            'stores' => Store::all(),
+            'stores' => $stores,
             'styles' => CustomStyle::all(),
+            'selectedStore' => $selectedStore,
         ]);
     }
 

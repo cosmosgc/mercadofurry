@@ -6,21 +6,7 @@
 <div class="max-w-7xl mx-auto px-4 space-y-8">
 
     {{-- Header --}}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900">Products</h1>
-            <p class="text-sm text-gray-600">
-                Manage your marketplace listings
-            </p>
-        </div>
-
-        <a
-            href="{{ route('products.create') }}"
-            class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition"
-        >
-            + New Product
-        </a>
-    </div>
+    
 
     {{-- Products Grid --}}
     @if($products->count())
