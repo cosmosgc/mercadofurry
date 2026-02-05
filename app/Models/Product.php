@@ -15,6 +15,7 @@ class Product extends Model
         'type',
         'price',
         'available',
+        'category_id',
     ];
 
     protected static function booted()
@@ -41,6 +42,10 @@ class Product extends Model
     public function store()
     {
         return $this->belongsTo(Store::class);
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
     public function customStyle()
     {

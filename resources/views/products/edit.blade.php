@@ -46,6 +46,19 @@
             >
         </div>
 
+        {{-- Category --}}
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <select name="category_id" class="w-full rounded-lg border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">No category</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" @selected((int)old('category_id', $product->category_id) === $category->id)>
+                        {{ $category->parent ? $category->parent->name . ' > ' . $category->name : $category->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         {{-- Price --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>

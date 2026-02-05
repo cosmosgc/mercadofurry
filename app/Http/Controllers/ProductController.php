@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Store;
 use App\Models\CustomStyle;
 use App\Models\ProductImage;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -33,6 +34,7 @@ class ProductController extends Controller
             'stores' => $stores,
             'styles' => CustomStyle::all(),
             'selectedStore' => $selectedStore,
+            'categories' => Category::with('parent')->orderBy('name')->get(),
         ]);
     }
 
@@ -40,6 +42,7 @@ class ProductController extends Controller
     {
         $data = $request->validate([
             'store_id'        => 'required|exists:stores,id',
+            'category_id'     => 'nullable|exists:categories,id',
             'custom_style_id' => 'nullable|exists:custom_styles,id',
             'name'            => 'required|string|max:255',
             'description'     => 'nullable|string',
@@ -55,7 +58,7 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load('store', 'customStyle');
+        $product->load('store', 'customStyle', 'category.parent');
 
         return view('products.show', compact('product'));
     }
@@ -68,6 +71,7 @@ class ProductController extends Controller
             'product' => $product,
             'styles' => CustomStyle::all(),
             'stores' => $stores,
+            'categories' => Category::with('parent')->orderBy('name')->get(),
         ]);
     }
 
@@ -78,6 +82,7 @@ class ProductController extends Controller
 
         $data = $request->validate([
             'store_id'    => 'required|exists:stores,id',
+            'category_id' => 'nullable|exists:categories,id',
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
             'price'       => 'nullable|numeric|min:0',

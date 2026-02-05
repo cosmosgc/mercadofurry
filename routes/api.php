@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\StoreController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CustomStyleController;
 use App\Http\Controllers\Api\ProductImageController;
+use App\Http\Controllers\Api\CategoryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -15,6 +16,7 @@ Route::name('api.')->group(function () {
     Route::apiResource('stores', StoreController::class);
     Route::apiResource('products', ProductController::class);
     Route::apiResource('custom-styles', CustomStyleController::class);
+    Route::apiResource('categories', CategoryController::class);
     Route::post(
         '/products/{product}/images/reorder',
         [ProductImageController::class, 'reorder']

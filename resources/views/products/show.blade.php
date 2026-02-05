@@ -60,6 +60,15 @@
                         {{ $product->store->name }}
                     </a>
                 </p>
+
+                @if($product->category)
+                    <p class="mt-1 text-sm text-gray-600">
+                        Category:
+                        <span class="font-medium text-gray-700">
+                            {{ $product->category->parent ? $product->category->parent->name . ' > ' . $product->category->name : $product->category->name }}
+                        </span>
+                    </p>
+                @endif
             </div>
 
             {{-- Price --}}

@@ -29,6 +29,10 @@
             {{ $product->name }}
         </h3>
 
+        @if($product->category)
+            <p class="text-xs text-gray-500 line-clamp-1">{{ $product->category->parent ? $product->category->parent->name . ' > ' . $product->category->name : $product->category->name }}</p>
+        @endif
+
         <p class="text-sm text-gray-600 line-clamp-2">
             {{ strip_tags($product->description) ?: 'No description' }}
         </p>
