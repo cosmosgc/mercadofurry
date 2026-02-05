@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Galeria;
 use App\Models\Categoria;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
@@ -14,8 +15,9 @@ class HomeController extends Controller
 
 public function index()
 {
-    // Pass to view
-    return view('home.index');
+    $products = Product::latest()->paginate(10);
+
+    return view('home.index', compact('products'));
 }
 
 
